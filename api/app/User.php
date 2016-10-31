@@ -3,24 +3,51 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use DB;
+use Response;
 
 class User extends Authenticatable
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    public static function login($data){
+        $response = new Response();
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+        try{
+            if($data['rol'] == 1){
+                $user = DB::table('doctores')->where('usuario', $data['usuario'])->first();
+                if($user){
+                    if($user->contrasena === md5($data['contrasena'])){
+                        $response->code = 200;
+                        $response->rows = 'Logueado';
+                    }else{
+                        $response->code=401;
+                        $response->msg = "Contraseña incorrecta";
+                    }
+                }else{
+                    $response->code=401;
+                    $response->msg = "No existe usuario";
+                }
+            }elseif($data['rol'] == 2){
+                $user = DB::table('pacientes')->where('usuario', $data['usuario'])->first();
+                if($user){
+                    if($user->contrasena === md5($data['contrasena'])){
+                        $response->code = 200;
+                        $response->rows = 'Logueado';
+                    }else{
+                        $response->code=401;
+                        $response->msg = "Contraseña incorrecta";
+                    }
+                }else{
+                    $response->code=404;
+                    $response->msg = "No existe usuario";
+                }
+            }
+        }
+        catch (\Exception $e){
+            $response->code =500;
+            $response->exception = $e->getMessage();
+            $response->msg = "Se produjo un error al loguear";
+        }
+        return $response;
+
+    }
 }

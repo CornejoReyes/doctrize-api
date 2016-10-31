@@ -31,4 +31,8 @@ Route::group(['prefix' => 'api'], function(){
         Route::put('/{id}', 'PacienteController@updateObject');
     });
 
+    Route::group(['prefix' => 'auth'], function(){
+        Route::post('/login', 'UserController@login');
+    });
+
 });
