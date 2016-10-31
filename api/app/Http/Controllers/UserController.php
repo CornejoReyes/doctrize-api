@@ -16,4 +16,16 @@ class UserController extends Controller
         return response()->json($response)->setStatusCode($response->code);
 
     }
+
+    public function logout(){
+
+        $response = new \App\Response();
+
+        $response->code = 200;
+        $response->msg = "Logout con éxito";
+
+        return response()->json($response)->setStatusCode($response->code);
+
+    }
+
 }

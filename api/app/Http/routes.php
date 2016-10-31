@@ -33,6 +33,7 @@ Route::group(['prefix' => 'api'], function(){
 
     Route::group(['prefix' => 'auth'], function(){
         Route::post('/login', 'UserController@login');
+        Route::post('/logout', 'UserController@logout');
     });
 
 });

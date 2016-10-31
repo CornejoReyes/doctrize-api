@@ -20,11 +20,11 @@ class User extends Authenticatable
                         $response->rows = 'Logueado';
                     }else{
                         $response->code=401;
-                        $response->msg = "Contraseña incorrecta";
+                        $response->msg = "Usuario o contraseña incorrectos";
                     }
                 }else{
                     $response->code=401;
-                    $response->msg = "No existe usuario";
+                    $response->msg = "Usuario o contraseña incorrectos";
                 }
             }elseif($data['rol'] == 2){
                 $user = DB::table('pacientes')->where('usuario', $data['usuario'])->first();
