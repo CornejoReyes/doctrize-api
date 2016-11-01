@@ -8,7 +8,7 @@ use Response;
 class Paciente extends Model
 {
     protected $table = "pacientes";
-     public $timestamps = false;
+    public $timestamps = false;
 
     public static function getAll(){
         $response = new Response();

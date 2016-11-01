@@ -31,6 +31,20 @@ Route::group(['prefix' => 'api'], function(){
         Route::put('/{id}', 'PacienteController@updateObject');
     });
 
+    Route::group(['prefix' => 'cita'], function(){
+        Route::get('','CitaController@index');
+        Route::get('/{id}','CitaController@show');
+        Route::post('','CitaController@create');
+        Route::put('/{id}', 'CitaController@updateObject');
+    });
+
+    Route::group(['prefix' => 'doctor'], function(){
+        Route::get('','DoctorController@index');
+        Route::get('/{id}','DoctorController@show');
+        Route::post('','DoctorController@create');
+        Route::put('/{id}', 'DoctorController@updateObject');
+    });
+
     Route::group(['prefix' => 'auth'], function(){
         Route::post('/login', 'UserController@login');
         Route::post('/logout', 'UserController@logout');
