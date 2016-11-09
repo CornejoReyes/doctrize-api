@@ -27,6 +27,7 @@ Route::group(['prefix' => 'api'], function(){
     Route::group(['prefix' => 'paciente'], function(){
         Route::get('','PacienteController@index');
         Route::get('/{id}','PacienteController@show');
+        Route::get('/{id}/citas','PacienteController@getCitas');
         Route::post('','PacienteController@create');
         Route::put('/{id}', 'PacienteController@updateObject');
     });
@@ -41,6 +42,7 @@ Route::group(['prefix' => 'api'], function(){
     Route::group(['prefix' => 'doctor'], function(){
         Route::get('','DoctorController@index');
         Route::get('/{id}','DoctorController@show');
+        Route::get('/{id}/citas','DoctorController@getCitas');
         Route::post('','DoctorController@create');
         Route::put('/{id}', 'DoctorController@updateObject');
     });

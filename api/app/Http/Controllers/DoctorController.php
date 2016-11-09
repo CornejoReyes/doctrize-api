@@ -17,4 +17,9 @@ class DoctorController extends Controller
         $response = \App\Doctor::get($id);
         return response()->json($response)->setStatusCode($response->code);
     }
+
+    public function getCitas($id){
+        $response = \App\Doctor::getCitas($id);
+        return response()->json($response)->setStatusCode($response->code);
+    }
 }

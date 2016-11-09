@@ -17,6 +17,11 @@ class PacienteController extends Controller
         return response()->json($response)->setStatusCode($response->code);
     }
 
+    public function getCitas($id){
+        $response = \App\Paciente::getCitas($id);
+        return response()->json($response)->setStatusCode($response->code);
+    }
+
     public function create(){
         $object = Request::all();
         $response = \App\Paciente::create($object);

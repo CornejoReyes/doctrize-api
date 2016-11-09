@@ -17,7 +17,7 @@ class User extends Authenticatable
                 if($user){
                     if($user->contrasena === md5($data['contrasena'])){
                         $response->code = 200;
-                        $response->rows = 'Logueado';
+                        $response->rows = $user->id;
                     }else{
                         $response->code=401;
                         $response->msg = "Usuario o contraseña incorrectos";
@@ -31,7 +31,7 @@ class User extends Authenticatable
                 if($user){
                     if($user->contrasena === md5($data['contrasena'])){
                         $response->code = 200;
-                        $response->rows = 'Logueado';
+                        $response->rows = $user->id;
                     }else{
                         $response->code=401;
                         $response->msg = "Contraseña incorrecta";

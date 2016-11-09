@@ -10,6 +10,10 @@ class Paciente extends Model
     protected $table = "pacientes";
     public $timestamps = false;
 
+    public function citas(){
+        return $this->hasMany('App\Cita','paciente_id');
+    }
+
     public static function getAll(){
         $response = new Response();
 
@@ -34,6 +38,25 @@ class Paciente extends Model
 
         try{
             $response->rows = self::find($id);
+            $response->code = 200;
+            if(count($response->rows) == 0){
+                $reponse->msg = "No se encontró información de pacientes";
+            }
+        }
+        catch( \Exception $e){
+            $response->msg = "Se produjo un error al obtener los pacientes";
+            $response->exception = $e->getMessage();
+        }
+
+        return $response;
+
+    }
+
+    public static function getCitas($id){
+        $response = new Response();
+
+        try{
+            $response->rows = self::find($id)->citas;
             $response->code = 200;
             if(count($response->rows) == 0){
                 $reponse->msg = "No se encontró información de pacientes";
