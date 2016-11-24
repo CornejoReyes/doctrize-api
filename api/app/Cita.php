@@ -10,11 +10,31 @@ class Cita extends Model
     public $timestamps=false;
 
     public function paciente(){
-        return $this->belongsTo('App\Paciente','id');
+        return $this->belongsTo('App\Paciente');
     }
 
     public function doctor(){
-        return $this->belongsTo('App\Doctor','id');
+        return $this->belongsTo('App\Doctor');
+    }
+
+    public static function countCitas($id){
+        $response = new Response();
+
+        $citas = new Doctor();
+
+        try{
+            $citas = $citas->countCitas($id);
+            $response->rows = $citas;
+            $response->code = 200;
+            if(count($response->rows) == 0){
+                $reponse->msg = "No se encontró información de citas";
+            }
+        }
+        catch( \Exception $e){
+            $response->msg = "Se produjo un error al contar";
+            $response->exception = $e->getMessage();
+        }
+        return $response;
     }
 
     public static function getAll(){
@@ -40,7 +60,7 @@ class Cita extends Model
         $response = new Response();
 
         try{
-            $response->rows = self::find($id);
+            $response->rows = self::where('id',$id)->with('paciente')->get();
             $response->code = 200;
             if(count($response->rows) == 0){
                 $reponse->msg = "No se encontró información de citas";
@@ -58,16 +78,24 @@ class Cita extends Model
     public static function create(array $data = []){
         $response = new Response();
         $object = new self();
+        $try = new self();
         try{
-            $object->paciente_id = $data['paciente_id'];
-            $object->doctor_id = $data['doctor_id'];
-            $object->comentario = $data['comentario'];
-            $object->fecha = $data['fecha'];
-            $object->tiempo = $data['tiempo'];
-            $object->estado_id = 1;
-            $object->save();
-            $response->code = 200;
-            $response->msg = "Se agendó la cita correctamente";
+            $posible = $try->where('fecha',$data['fecha'])->get();
+            if(count($posible) != 0){
+                $response->code = 500;
+                $response->msg = "Fecha y hora ocupados";
+                $response->rows = $data;
+            }else{
+                $object->paciente_id = $data['paciente_id'];
+                $object->doctor_id = $data['doctor_id'];
+                $object->comentario = $data['comentario'];
+                $object->fecha = $data['fecha'];
+                $object->estado_id = 1;
+                $object->save();
+                $response->code = 200;
+                $response->msg = "Se agendó la cita correctamente";
+                $response->rows = $object;
+            }
         }
         catch(\Exception $e){
             $response->msg = "Se produjo un error al agendar la cita";
@@ -76,32 +104,8 @@ class Cita extends Model
         }
 
         return $response;
+        //echo json_encode($posible);
     }
 
-    public static function updateObject(array $data = []){
-        $response = new Response();
-        $object = self::find($data['id']);
-        try{
-            $object->nombre = $data['nombre'];
-            $object->apellido_paterno = $data['apellido_paterno'];
-            $object->apellido_materno = $data['apellido_materno'];
-            $object->fecha_nacimiento = $data['fecha_nacimiento'];
-            $object->sexo = $data['sexo'];
-            $object->telefono = $data['telefono'];
-            $object->calle = $data['calle'];
-            $object->colonia = $data['colonia'];
-            $object->municipio = $data['municipio'];
-            $object->save();
-            $response->code = 200;
-            $response->msg = "Se actualizó al paciente correctamente";
-        }
-        catch(\Exception $e){
-            $response->msg = "Se produjo un error al actualizar al paciente";
-            $response->exception = $e->getMessage();
-            $response->code = 500;
-        }
-
-        return $response;
-    }
 
 }

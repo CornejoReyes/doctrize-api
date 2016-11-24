@@ -26,6 +26,7 @@ Route::group(['prefix' => 'api'], function(){
 
     Route::group(['prefix' => 'paciente'], function(){
         Route::get('','PacienteController@index');
+        Route::get('/count','PacienteController@countPacientes');
         Route::get('/{id}','PacienteController@show');
         Route::get('/{id}/citas','PacienteController@getCitas');
         Route::post('','PacienteController@create');
@@ -34,6 +35,7 @@ Route::group(['prefix' => 'api'], function(){
 
     Route::group(['prefix' => 'cita'], function(){
         Route::get('','CitaController@index');
+        Route::post('/count','CitaController@countCitas');
         Route::get('/{id}','CitaController@show');
         Route::post('','CitaController@create');
         Route::put('/{id}', 'CitaController@updateObject');

@@ -11,6 +11,10 @@ class PacienteController extends Controller
         $response = \App\Paciente::getAll();
         return response()->json($response)->setStatusCode($response->code);
     }
+    public function countPacientes(){
+        $response = \App\Paciente::countPacientes();
+        return response()->json($response)->setStatusCode($response->code);
+    }
 
     public function show($id){
         $response = \App\Paciente::get($id);

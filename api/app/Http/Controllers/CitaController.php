@@ -12,6 +12,11 @@ class CitaController extends Controller
         $response = \App\Cita::getAll();
         return response()->json($response)->setStatusCode($response->code);
     }
+    public function countCitas(){
+        $id = Request::input('id');
+        $response = \App\Cita::countCitas($id);
+        return response()->json($response)->setStatusCode($response->code);
+    }
 
     public function show($id){
         $response = \App\Cita::get($id);
@@ -22,6 +27,7 @@ class CitaController extends Controller
         $object = Request::all();
         $response = \App\Cita::create($object);
         return response()->json($response)->setStatusCode($response->code);
+        //return $response;
     }
 
     public function updateObject(){

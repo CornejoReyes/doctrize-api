@@ -14,6 +14,24 @@ class Paciente extends Model
         return $this->hasMany('App\Cita','paciente_id');
     }
 
+    public static function countPacientes(){
+        $response = new Response();
+
+        try{
+            $response->rows = self::count();
+            $response->code = 200;
+            if(count($response->rows) == 0){
+                $reponse->msg = "No se encontró información de pacientes";
+            }
+        }
+        catch( \Exception $e){
+            $response->msg = "Se produjo un error al obtener los pacientes";
+            $response->exception = $e->getMessage();
+        }
+
+        return $response;
+    }
+
     public static function getAll(){
         $response = new Response();
 
@@ -56,7 +74,7 @@ class Paciente extends Model
         $response = new Response();
 
         try{
-            $response->rows = self::find($id)->citas;
+            $response->rows = self::where('id',$id)->with('citas.doctor')->get();
             $response->code = 200;
             if(count($response->rows) == 0){
                 $reponse->msg = "No se encontró información de pacientes";
