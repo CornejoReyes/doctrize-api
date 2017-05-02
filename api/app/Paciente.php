@@ -9,9 +9,14 @@ class Paciente extends Model
 {
     protected $table = "pacientes";
     public $timestamps = false;
+    protected $hidden = ['contrasena'];
 
     public function citas(){
         return $this->hasMany('App\Cita','paciente_id');
+    }
+
+    public function datos(){
+        return $this->hasOne('App\DatosPaciente','paciente_id')->orderBy('id', 'desc');
     }
 
     public static function countPacientes(){
@@ -36,13 +41,14 @@ class Paciente extends Model
         $response = new Response();
 
         try{
-            $response->rows = self::all();
+            $response->rows = Paciente::all();
             $response->code = 200;
             if(count($response->rows) == 0){
                 $reponse->msg = "No se encontró información de pacientes";
             }
         }
         catch( \Exception $e){
+            $response->code = 500;
             $response->msg = "Se produjo un error al obtener los pacientes";
             $response->exception = $e->getMessage();
         }
@@ -55,7 +61,7 @@ class Paciente extends Model
         $response = new Response();
 
         try{
-            $response->rows = self::find($id);
+            $response->rows = self::where('id', $id)->with('datos')->get();
             $response->code = 200;
             if(count($response->rows) == 0){
                 $reponse->msg = "No se encontró información de pacientes";
@@ -138,6 +144,28 @@ class Paciente extends Model
             $response->code = 500;
         }
 
+        return $response;
+    }
+
+    public static function editData($id, $userData)
+    {
+        $response = new Response;
+        try {
+            $data = new DatosPaciente;
+            $data->paciente_id = $id;
+            $data->peso = $userData['peso'];
+            $data->altura = $userData['altura'];
+            $data->presion = $userData['presion'];
+            $data->alergia = $userData['alergia'];
+            $data->save();
+            $response->code = 200;
+            $response->msg = "Se ha guardado la información";
+        }
+        catch (\Exception $e) {
+            $response->code = 500;
+            $response->msg = "Se produjo un error";
+            $response->exception = $e->getMessage();
+        }
         return $response;
     }
 

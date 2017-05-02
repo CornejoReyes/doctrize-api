@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cita extends Model
 {
     protected $table = "citas";
-    public $timestamps=false;
+    public $timestamps = false;
 
     public function paciente(){
         return $this->belongsTo('App\Paciente');
@@ -15,6 +15,11 @@ class Cita extends Model
 
     public function doctor(){
         return $this->belongsTo('App\Doctor');
+    }
+
+    public function receta()
+    {
+        return $this->hasOne('App\Receta');
     }
 
     public static function countCitas($id){
@@ -41,7 +46,7 @@ class Cita extends Model
         $response = new Response();
 
         try{
-            $response->rows = self::with('paciente')->get();
+            $response->rows = self::where('estado_id', 2)->with('paciente')->get();
             $response->code = 200;
             if(count($response->rows) == 0){
                 $reponse->msg = "No se encontró información de citas";
@@ -60,7 +65,7 @@ class Cita extends Model
         $response = new Response();
 
         try{
-            $response->rows = self::where('id',$id)->with('paciente')->get();
+            $response->rows = self::where('id',$id)->with('paciente.datos', 'receta')->get();
             $response->code = 200;
             if(count($response->rows) == 0){
                 $reponse->msg = "No se encontró información de citas";
@@ -91,6 +96,7 @@ class Cita extends Model
                 $object->comentario = $data['comentario'];
                 $object->fecha = $data['fecha'];
                 $object->estado_id = 1;
+                $object->descripcion = $data['descripcion'];
                 $object->save();
                 $response->code = 200;
                 $response->msg = "Se agendó la cita correctamente";
@@ -104,7 +110,30 @@ class Cita extends Model
         }
 
         return $response;
-        //echo json_encode($posible);
+    }
+
+    public static function updateObject($id, $receta_doc, $comentario_doctor)
+    {
+        $response = new Response;
+        try {
+            $cita = Cita::find($id);
+            $cita->comentario_doctor = $comentario_doctor;
+            $cita->estado_id = 3;
+            $cita->save();
+            $receta = new Receta;
+            $receta->cita_id = $id;
+            $receta->receta = $receta_doc;
+            $receta->save();
+            $response->code = 200;
+            $response->msg = "Se ha guardado la cita.";
+        }
+        catch (\Exception $e) {
+            $response->msg = "Se produjo un error al guardar la cita";
+            $response->exception = $e->getMessage().' '.$e->getLine();
+            $response->code = 500;
+        }
+        return $response;
+
     }
 
 

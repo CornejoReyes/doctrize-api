@@ -37,4 +37,10 @@ class PacienteController extends Controller
         $response = \App\Paciente::updateObject($object);
         return response()->json($response)->setStatusCode($response->code);
     }
+
+    public function editData($id){
+        $object = Request::all();
+        $response = \App\Paciente::editData($id, $object);
+        return response()->json($response)->setStatusCode($response->code);
+    }
 }

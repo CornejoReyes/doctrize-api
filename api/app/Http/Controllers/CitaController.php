@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests;
+use Illuminate\Http\Request as Req;
 use Request;
 
 class CitaController extends Controller
@@ -30,9 +31,10 @@ class CitaController extends Controller
         //return $response;
     }
 
-    public function updateObject(){
-        $object = Request::all();
-        $response = \App\Cita::updateObject($object);
+    public function updateObject(Req $req, $id){
+        $receta = $req->get('receta');
+        $comentario_doctor = $req->get('comentario_doctor');
+        $response = \App\Cita::updateObject($id, $receta, $comentario_doctor);
         return response()->json($response)->setStatusCode($response->code);
     }
 }

@@ -52,7 +52,7 @@ class Doctor extends Model
         $response = new Response();
 
         try{
-            $response->rows = self::find($id)->citas;
+            $response->rows = self::find($id)->citas()->where('estado_id', 1)->get();
             $response->code = 200;
             if(count($response->rows) == 0){
                 $reponse->msg = "No se encontró información de doctores";
@@ -68,8 +68,8 @@ class Doctor extends Model
         $response = new Response();
 
         try{
-            $response->rows = self::find($id)->citas;
-            $response->rows = count($response->rows);
+            $response->rows = self::find($id)->citas()->where('estado_id', 1)->count();
+            // $response->rows = count($response->rows);
             $response->code = 200;
             if(count($response->rows) == 0){
                 $reponse->msg = "No se encontró información de doctores";

@@ -31,6 +31,7 @@ Route::group(['prefix' => 'api'], function(){
         Route::get('/{id}/citas','PacienteController@getCitas');
         Route::post('','PacienteController@create');
         Route::put('/{id}', 'PacienteController@updateObject');
+        Route::post('/{id}/data', 'PacienteController@editData');
     });
 
     Route::group(['prefix' => 'cita'], function(){
@@ -38,7 +39,7 @@ Route::group(['prefix' => 'api'], function(){
         Route::post('/count','CitaController@countCitas');
         Route::get('/{id}','CitaController@show');
         Route::post('','CitaController@create');
-        Route::put('/{id}', 'CitaController@updateObject');
+        Route::post('/{id}/update', 'CitaController@updateObject');
     });
 
     Route::group(['prefix' => 'doctor'], function(){
