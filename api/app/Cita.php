@@ -136,5 +136,24 @@ class Cita extends Model
 
     }
 
+    public static function cancel($id)
+    {
+        $response = new Response;
+        try {
+            $cita = Cita::find($id);
+            $cita->estado_id = 2;
+            $cita->save();
+            $response->code = 200;
+            $response->msg = "Se ha cancelado la cita";
+        }
+        catch (\Exception $e) {
+            $response->code = 500;
+            $response->msg = "Se ha producido un error";
+            $response->exception = $e->getMessage();
+        }
+        return $response;
+
+    }
+
 
 }

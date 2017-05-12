@@ -37,4 +37,10 @@ class CitaController extends Controller
         $response = \App\Cita::updateObject($id, $receta, $comentario_doctor);
         return response()->json($response)->setStatusCode($response->code);
     }
+
+    public function cancel($id)
+    {
+        $response = \App\Cita::cancel($id);
+        return response()->json($response)->setStatusCode($response->code);
+    }
 }

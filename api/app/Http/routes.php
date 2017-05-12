@@ -38,6 +38,7 @@ Route::group(['prefix' => 'api'], function(){
         Route::get('','CitaController@index');
         Route::post('/count','CitaController@countCitas');
         Route::get('/{id}','CitaController@show');
+        Route::post('/{id}/cancel','CitaController@cancel');
         Route::post('','CitaController@create');
         Route::post('/{id}/update', 'CitaController@updateObject');
     });
