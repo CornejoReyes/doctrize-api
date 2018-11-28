@@ -12,6 +12,9 @@ class Doctor extends Model
         return $this->hasMany('App\Cita');
     }
 
+    /*
+    * Descripcion: Esta función permite obtener todos los doctores registrados en la plataforma.
+    */
     public static function getAll(){
         $response = new Response();
 
@@ -31,6 +34,12 @@ class Doctor extends Model
 
     }
 
+    /*
+    * Descripcion: Esta funcion permite obtener a un doctor en específico, basado en
+    * el parámetro id pasado a la función.
+    * Parámetros:
+    * (int) id   El doctor a obtener
+    */
     public static function get($id){
         $response = new Response();
 
@@ -48,6 +57,12 @@ class Doctor extends Model
         return $response;
     }
 
+    /*
+    * Descripcion: Con ésta función se obtienen las citas a las que el doctor
+    * fue asignado, mediante el parámetro id.
+    * Parámetros:
+    * (int) id   ID del doctor
+    */
     public static function getCitas($id){
         $response = new Response();
 
@@ -64,6 +79,13 @@ class Doctor extends Model
         }
         return $response;
     }
+
+    /*
+    * Descripcion: Con ésta función se cuentan las citas a las que el doctor
+    * fue asignado, mediante el parámetro id.
+    * Parámetros:
+    * (int) id   ID del doctor
+    */
     public static function countCitas($id){
         $response = new Response();
 

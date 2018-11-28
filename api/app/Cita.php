@@ -22,6 +22,10 @@ class Cita extends Model
         return $this->hasOne('App\Receta');
     }
 
+    /*
+    * Descripcion: Esta funcion cuenta todas las citas disponibles del sistema.
+    * Si no hay citas disponibles, devuelve un mensaje notificándolo.
+    */
     public static function countCitas($id){
         $response = new Response();
 
@@ -42,6 +46,10 @@ class Cita extends Model
         return $response;
     }
 
+    /*
+    * Descripcion: Esta funcion obtiene todas las citas registradas en el sistema.
+    * Si no hay citas disponibles, devuelve un mensaje notificándolo.
+    */
     public static function getAll(){
         $response = new Response();
 
@@ -61,6 +69,12 @@ class Cita extends Model
 
     }
 
+    /*
+    * Descripcion: Esta funcion obtiene los datos de una cita basado en el parametro id que recibe la funcion.
+    * Si no se encuentra la cita, se devuelve un mensaje notificándolo
+    * Parámetros:
+    * (int) id  El id de la cita
+    */
     public static function get($id){
         $response = new Response();
 
@@ -80,6 +94,19 @@ class Cita extends Model
 
     }
 
+    /*
+    * Descripcion: Esta funcion permite crear una cita en el sistema. Si la hora de la cita a registrar
+    * ya está ocupada, se devuelve un error y un mensaje notificando que la hora está ocupada.
+    * Parámetros:
+    * (array) data   La cita a registrar
+    * data: {
+        paciente_id
+        doctor_id
+        comentario
+        fecha
+        descripcion
+    }
+    */
     public static function create(array $data = []){
         $response = new Response();
         $object = new self();
@@ -112,6 +139,13 @@ class Cita extends Model
         return $response;
     }
 
+    /*
+    * Descripcion: Esta funcion permite agregar una receta y / o comentario a la cita y a su vez
+    * la cambia a estado de "Terminada".
+    * Parámetros:
+    * (string) receta_doc   La receta dada por el doctor
+    * (string) comentario_doctor   Recomendaciones hechas por el doctor
+    */
     public static function updateObject($id, $receta_doc, $comentario_doctor)
     {
         $response = new Response;
@@ -136,6 +170,11 @@ class Cita extends Model
 
     }
 
+    /*
+    * Descripcion: Con ésta función se cancela una cita y se le asigna un estado de "Cancelada".
+    * Parámetros:
+    * (int) id   La cita a cancelar
+    */
     public static function cancel($id)
     {
         $response = new Response;

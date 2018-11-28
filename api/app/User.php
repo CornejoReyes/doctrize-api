@@ -8,6 +8,16 @@ use Response;
 
 class User extends Authenticatable
 {
+    /*
+    * Descripcion: Con ésta función se permite autenticar a un usuario del sistema.
+    * Parámetros:
+    * (array) data   Credenciales de acceso
+    * data: {
+        usuario
+        contrasena
+        rol
+    }
+    */
     public static function login($data){
         $response = new Response();
 
