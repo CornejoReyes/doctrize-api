@@ -51,6 +51,14 @@ Route::group(['prefix' => 'api'], function(){
         Route::put('/{id}', 'DoctorController@updateObject');
     });
 
+    Route::group(['prefix' => 'proveedor'], function(){
+        Route::get('', 'ProveedoresController@index');
+        Route::get('/{id}', 'ProveedoresController@get');
+        Route::post('', 'ProveedoresController@create');
+        Route::put('/{id}', 'ProveedoresController@edit');
+        Route::delete('/{id}', 'ProveedoresController@remove');
+    });
+
     Route::group(['prefix' => 'auth'], function(){
         Route::post('/login', 'UserController@login');
         Route::post('/logout', 'UserController@logout');
